@@ -1,0 +1,17 @@
+steps:
+  # Step to build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/telegram-bot', '.']
+  
+  # Step to push the Docker image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/telegram-bot']
+
+  # Step to deploy the image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: ['run', 'deploy', 'telegram-bot', 
+           '--image', 'gcr.io/$PROJECT_ID/telegram-bot', 
+           '--platform', 'managed',
+           '--region', 'us-central1',
+           '--allow-unauthenticated']
