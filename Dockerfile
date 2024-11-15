@@ -1,19 +1,16 @@
-# Use the official Python image
 FROM python:3.10-slim
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy requirements file and install dependencies
-COPY requirements.txt requirements.txt
+# Copy everything from the local directory to the container's working directory
+COPY . .
+
+# Install Python dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the bot script and credentials
-COPY bot.py .
-COPY credentials.json .
+# Expose the default Cloud Run port
+EXPOSE 8080
 
-# Expose the port the bot listens on (if applicable)
-# EXPOSE 8080 (only needed if the bot serves via a port)
-
-# Run the bot
+# Command to run the bot (ensure it's the entry point)
 CMD ["python", "bot.py"]
