@@ -1,13 +1,17 @@
+# Use Python image
 FROM python:3.10-slim
 
 WORKDIR /app
 
+# Copy all application files
 COPY . .
 
+# Copy credentials.json explicitly (if not part of the above copy)
+COPY credentials.json /app/credentials.json
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port the container should listen on
 EXPOSE 8080
 
-# Ensure your bot is running in the background and listening on 8080 if needed
 CMD ["python", "bot.py"]
